@@ -1,0 +1,433 @@
+﻿**********************
+Начало записи сценария Windows PowerShell
+Время начала: 20261110154547
+Имя пользователя: DESKTOP-0O71IOT\ACER
+Запуск от имени пользователя: DESKTOP-0O71IOT\ACER
+Имя конфигурации: 
+Компьютер: DESKTOP-0O71IOT (Microsoft Windows NT 10.0.26200.0)
+Ведущее приложение: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe
+ИД процесса: 16304
+PSVersion: 5.1.26100.9711
+PSEdition: Desktop
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.26100.9711
+BuildVersion: 10.0.26100.9711
+CLRVersion: 4.0.30319.42000
+WSManStackVersion: 3.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+**********************
+PS C:\Users\ACER\proxy-lab> Run 'docker compose version'
+
+PS> docker compose version
+
+PS C:\Users\ACER\proxy-lab> Run 'docker compose config --services'
+
+PS> docker compose config --services
+
+PS C:\Users\ACER\proxy-lab> docker compose up -d app1 app2 app3 nginx
+
+PS C:\Users\ACER\proxy-lab> W "html/index.html" "<h1>Привет! Это страница от nginx</h1>`n"
+PS C:\Users\ACER\proxy-lab> W "nginx/default.conf" $c1
+PS C:\Users\ACER\proxy-lab> Run 'Rld'
+
+PS> Rld
+
+
+PS C:\Users\ACER\proxy-lab> Start-Sleep 2
+PS C:\Users\ACER\proxy-lab> Run 'curl.exe -I http://localhost:8080'
+
+PS> curl.exe -I http://localhost:8080
+
+PS C:\Users\ACER\proxy-lab> Run 'curl.exe -I http://localhost:8080/nope.html'
+
+PS> curl.exe -I http://localhost:8080/nope.html
+
+PS C:\Users\ACER\proxy-lab> Run 'docker compose logs nginx | Select-String HEAD | Select-Object -Last 2'
+
+PS> docker compose logs nginx | Select-String HEAD | Select-Object -Last 2
+
+nginx-1  | 172.18.0.1 - - [10/Nov/2026:09:46:41 +0000] "HEAD / HTTP/1.1"
+200 0 "-" "curl/8.21.0" "-"
+nginx-1  | 172.18.0.1 - - [10/Nov/2026:09:46:41 +0000] "HEAD /nope.html
+HTTP/1.1" 404 0 "-" "curl/8.21.0" "-"
+
+
+PS C:\Users\ACER\proxy-lab> W "nginx/default.conf" $c2
+PS C:\Users\ACER\proxy-lab> Run 'Rld'
+
+PS> Rld
+
+
+PS C:\Users\ACER\proxy-lab> Run 'curl.exe http://localhost:8080/hello'
+
+PS> curl.exe http://localhost:8080/hello
+
+PS C:\Users\ACER\proxy-lab> W "nginx/default.conf" $c2.Replace('charset utf-8;','charset utf-8')
+PS C:\Users\ACER\proxy-lab> Run 'Rld'
+
+PS> Rld
+
+
+PS C:\Users\ACER\proxy-lab> Run 'curl.exe http://localhost:8080/'
+
+PS> curl.exe http://localhost:8080/
+
+PS C:\Users\ACER\proxy-lab> W "nginx/default.conf" $c2
+PS C:\Users\ACER\proxy-lab> Run 'Rld'
+
+PS> Rld
+
+
+PS C:\Users\ACER\proxy-lab> Run 'docker compose ps'
+
+PS> docker compose ps
+
+PS C:\Users\ACER\proxy-lab> Run 'docker compose exec nginx wget -qO- http://app1'
+
+PS> docker compose exec nginx wget -qO- http://app1
+
+PS C:\Users\ACER\proxy-lab> W "nginx/default.conf" $c3; Run 'Rld'
+
+PS> Rld
+
+
+PS C:\Users\ACER\proxy-lab> Run 'curl.exe http://localhost:8080/app/test'
+
+PS> curl.exe http://localhost:8080/app/test
+
+PS C:\Users\ACER\proxy-lab> W "nginx/default.conf" $c3.Replace('proxy_pass http://app1:80/;','proxy_pass http://app1:80;'); Run 'Rld'
+
+PS> Rld
+
+
+PS C:\Users\ACER\proxy-lab> Run 'curl.exe http://localhost:8080/app/test'
+
+PS> curl.exe http://localhost:8080/app/test
+
+PS C:\Users\ACER\proxy-lab> W "nginx/default.conf" $c3.Replace('proxy_set_header','#proxy_set_header'); Run 'Rld'
+
+PS> Rld
+
+
+PS C:\Users\ACER\proxy-lab> Run 'curl.exe http://localhost:8080/app/test'
+
+PS> curl.exe http://localhost:8080/app/test
+
+PS C:\Users\ACER\proxy-lab> W "nginx/default.conf" $c4; Run 'Rld'
+
+PS> Rld
+
+
+PS C:\Users\ACER\proxy-lab> Run 'Hit 6 http://localhost:8080/app/'
+
+PS> Hit 6 http://localhost:8080/app/
+Name: app1
+Name: app1
+Name: app1
+Name: app1
+Name: app1
+Name: app1
+PS C:\Users\ACER\proxy-lab> W "nginx/default.conf" $c4.Replace('server app1:80;','server app1:80 weight=3;'); Run 'Rld'
+
+PS> Rld
+
+
+PS C:\Users\ACER\proxy-lab> Run 'Hit 10 http://localhost:8080/app/ | Group-Object | Select-Object Count, Name'
+
+PS> Hit 10 http://localhost:8080/app/ | Group-Object | Select-Object Count, Name
+
+Count Name
+----- ----
+   10 Name: app1
+
+
+PS C:\Users\ACER\proxy-lab> W "nginx/default.conf" $c4; Run 'Rld'
+
+PS> Rld
+
+
+PS C:\Users\ACER\proxy-lab> Run 'docker compose stop app2'
+
+PS> docker compose stop app2
+
+PS C:\Users\ACER\proxy-lab> Run 'Codes 6 http://localhost:8080/app/'
+
+PS> Codes 6 http://localhost:8080/app/
+200 200 200 200 200 200
+PS C:\Users\ACER\proxy-lab> Run 'docker compose logs nginx --tail 60 | Select-String "connect\(\) failed" | Select-Object -First 1'
+
+PS> docker compose logs nginx --tail 60 | Select-String "connect\(\) failed" | Select-Object -First 1
+PS C:\Users\ACER\proxy-lab> Run 'docker compose stop app1 app3'
+
+PS> docker compose stop app1 app3
+
+PS C:\Users\ACER\proxy-lab> Run 'curl.exe -i http://localhost:8080/app/'
+
+PS> curl.exe -i http://localhost:8080/app/
+
+PS C:\Users\ACER\proxy-lab> Run 'docker compose start app1 app2 app3'
+
+PS> docker compose start app1 app2 app3
+
+PS C:\Users\ACER\proxy-lab> Start-Sleep 5
+PS C:\Users\ACER\proxy-lab> Run 'Rld'
+
+PS> Rld
+
+
+PS C:\Users\ACER\proxy-lab> Start-Sleep 12
+PS C:\Users\ACER\proxy-lab> Run 'Hit 6 http://localhost:8080/app/'
+
+PS> Hit 6 http://localhost:8080/app/
+Name: app1
+Name: app1
+Name: app1
+Name: app1
+Name: app1
+Name: app1
+PS C:\Users\ACER\proxy-lab> W "nginx/default.conf" $c4.Replace('upstream backend {',"upstream backend {`n    ip_hash;"); Run 'Rld'
+
+PS> Rld
+
+
+PS C:\Users\ACER\proxy-lab> Run 'Hit 6 http://localhost:8080/app/'
+
+PS> Hit 6 http://localhost:8080/app/
+Name: app1
+Name: app1
+Name: app1
+Name: app1
+Name: app1
+Name: app1
+PS C:\Users\ACER\proxy-lab> W "nginx/default.conf" $c4; Run 'Rld'
+
+PS> Rld
+
+
+PS C:\Users\ACER\proxy-lab> W "nginx/default.conf" $c5; Run 'Rld'
+
+PS> Rld
+
+
+PS C:\Users\ACER\proxy-lab> Run '1..5 | ForEach-Object { curl.exe -s -D - http://localhost:8080/cached/ | Select-String "X-Cache-Status|^Name" | ForEach-Object { $_.Line.Trim() } }'
+
+PS> 1..5 | ForEach-Object { curl.exe -s -D - http://localhost:8080/cached/ | Select-String "X-Cache-Status|^Name" | ForEach-Object { $_.Line.Trim() } }
+X-Cache-Status: EXPIRED
+Name: app1
+X-Cache-Status: HIT
+Name: app1
+X-Cache-Status: HIT
+Name: app1
+X-Cache-Status: HIT
+Name: app1
+X-Cache-Status: HIT
+Name: app1
+PS C:\Users\ACER\proxy-lab> Start-Sleep 35
+PS C:\Users\ACER\proxy-lab> Run '1..5 | ForEach-Object { curl.exe -s -D - http://localhost:8080/cached/ | Select-String "X-Cache-Status|^Name" | ForEach-Object { $_.Line.Trim() } }'
+
+PS> 1..5 | ForEach-Object { curl.exe -s -D - http://localhost:8080/cached/ | Select-String "X-Cache-Status|^Name" | ForEach-Object { $_.Line.Trim() } }
+X-Cache-Status: EXPIRED
+Name: app1
+X-Cache-Status: HIT
+Name: app1
+X-Cache-Status: HIT
+Name: app1
+X-Cache-Status: HIT
+Name: app1
+X-Cache-Status: HIT
+Name: app1
+PS C:\Users\ACER\proxy-lab> W "nginx/default.conf" $c6; Run 'Rld'
+
+PS> Rld
+
+
+PS C:\Users\ACER\proxy-lab> Run 'Codes 10 http://localhost:8080/app/'
+
+PS> Codes 10 http://localhost:8080/app/
+200 200 200 200 200 200 200 200 429 429
+PS C:\Users\ACER\proxy-lab> Run 'docker compose logs nginx --tail 60 | Select-String "limiting requests" | Select-Object -First 1'
+
+PS> docker compose logs nginx --tail 60 | Select-String "limiting requests" | Select-Object -First 1
+
+nginx-1  | 2026/11/10 09:49:48 [error] 812#812: *330 limiting requests,
+excess: 3.856 by zone "perip", client: 172.18.0.1, server: _, request:
+"GET /app/ HTTP/1.1", host: "localhost:8080"
+
+
+PS C:\Users\ACER\proxy-lab> W "nginx/default.conf" $c5; Run 'Rld'
+
+PS> Rld
+
+
+PS C:\Users\ACER\proxy-lab> Run 'Codes 10 http://localhost:8080/app/'
+
+PS> Codes 10 http://localhost:8080/app/
+200 200 200 200 200 200 200 200 200 200
+PS C:\Users\ACER\proxy-lab> W "haproxy/haproxy.cfg" @'
+global
+    log stdout format raw local0
+
+defaults
+    mode http
+    log global
+    option httplog
+    timeout connect 5s
+    timeout client  30s
+    timeout server  30s
+
+resolvers docker
+    nameserver dns 127.0.0.11:53
+
+frontend web
+    bind :8080
+    default_backend apps
+
+backend apps
+    balance roundrobin
+    option httpchk
+    http-check send meth GET uri /health
+    default-server check inter 2s fall 2 rise 2 resolvers docker init-addr none
+    server app1 app1:80
+    server app2 app2:80
+    server app3 app3:80
+
+listen stats
+    bind :8404
+    stats enable
+    stats uri /
+    stats refresh 2s
+'@
+PS C:\Users\ACER\proxy-lab> docker compose up -d haproxy
+
+PS C:\Users\ACER\proxy-lab> Start-Sleep 10
+PS C:\Users\ACER\proxy-lab> Run 'docker compose logs haproxy | Select-String ALERT'
+
+PS> docker compose logs haproxy | Select-String ALERT
+
+haproxy-1  | [ALERT]    (1) : config : parsing
+[/usr/local/etc/haproxy/haproxy.cfg:32]: Missing LF on last line, file
+might have been truncated at position 21.
+haproxy-1  | [ALERT]    (1) : config : Error(s) found in configuration
+file : /usr/local/etc/haproxy/haproxy.cfg
+haproxy-1  | [ALERT]    (1) : config : Fatal errors found in configuration.
+
+
+PS C:\Users\ACER\proxy-lab> Run 'Hit 6 http://localhost:8081'
+
+PS> Hit 6 http://localhost:8081
+PS C:\Users\ACER\proxy-lab> Run 'Shot "http://localhost:8404/;norefresh" "haproxy-up.png"'
+
+PS> Shot "http://localhost:8404/;norefresh" "haproxy-up.png"
+screenshot saved: haproxy-up.png
+PS C:\Users\ACER\proxy-lab> Run 'docker compose stop app3'
+
+PS> docker compose stop app3
+
+PS C:\Users\ACER\proxy-lab> Start-Sleep 10
+PS C:\Users\ACER\proxy-lab> Run 'Hit 6 http://localhost:8081'
+
+PS> Hit 6 http://localhost:8081
+PS C:\Users\ACER\proxy-lab> Run 'Shot "http://localhost:8404/;norefresh" "haproxy-down.png"'
+
+PS> Shot "http://localhost:8404/;norefresh" "haproxy-down.png"
+screenshot saved: haproxy-down.png
+PS C:\Users\ACER\proxy-lab> Run 'docker compose start app3'
+
+PS> docker compose start app3
+
+PS C:\Users\ACER\proxy-lab> Start-Sleep 10
+PS C:\Users\ACER\proxy-lab> Run 'Hit 6 http://localhost:8081'
+
+PS> Hit 6 http://localhost:8081
+PS C:\Users\ACER\proxy-lab> Run 'docker compose logs haproxy | Select-String "app3 is" | Select-Object -Last 4'
+
+PS> docker compose logs haproxy | Select-String "app3 is" | Select-Object -Last 4
+PS C:\Users\ACER\proxy-lab> docker compose up -d traefik web
+
+PS C:\Users\ACER\proxy-lab> Start-Sleep 10
+PS C:\Users\ACER\proxy-lab> Run 'HitH 6 http://localhost:8082'
+
+PS> HitH 6 http://localhost:8082
+Hostname: 62ee2a439bfd
+Hostname: 32c71bc01a51
+Hostname: a48bb89770e5
+Hostname: 32c71bc01a51
+Hostname: a48bb89770e5
+Hostname: 62ee2a439bfd
+PS C:\Users\ACER\proxy-lab> docker compose up -d --scale web=5
+
+PS C:\Users\ACER\proxy-lab> Start-Sleep 10
+PS C:\Users\ACER\proxy-lab> Run 'HitH 10 http://localhost:8082 | Group-Object | Select-Object Count, Name'
+
+PS> HitH 10 http://localhost:8082 | Group-Object | Select-Object Count, Name
+
+Count Name
+----- ----
+    2 Hostname: 9d38d1667865
+    2 Hostname: 62ee2a439bfd
+    2 Hostname: b1d472fb3d4a
+    2 Hostname: a48bb89770e5
+    2 Hostname: 32c71bc01a51
+
+
+PS C:\Users\ACER\proxy-lab> Run 'Shot "http://localhost:8090/dashboard/#/http/services" "traefik-5.png"'
+
+PS> Shot "http://localhost:8090/dashboard/#/http/services" "traefik-5.png"
+screenshot saved: traefik-5.png
+PS C:\Users\ACER\proxy-lab> docker compose up -d --scale web=1
+
+PS C:\Users\ACER\proxy-lab> Start-Sleep 10
+PS C:\Users\ACER\proxy-lab> Run 'Shot "http://localhost:8090/dashboard/#/http/services" "traefik-1.png"'
+
+PS> Shot "http://localhost:8090/dashboard/#/http/services" "traefik-1.png"
+screenshot saved: traefik-1.png
+PS C:\Users\ACER\proxy-lab> Run 'docker compose logs traefik | Select-String "too old" | Select-Object -First 1'
+
+PS> docker compose logs traefik | Select-String "too old" | Select-Object -First 1
+PS C:\Users\ACER\proxy-lab> W "caddy/Caddyfile" @'
+:80 {
+    reverse_proxy app1:80 app2:80 app3:80 {
+        lb_policy round_robin
+    }
+}
+'@
+PS C:\Users\ACER\proxy-lab> docker compose up -d caddy
+
+PS C:\Users\ACER\proxy-lab> Start-Sleep 5
+PS C:\Users\ACER\proxy-lab> Run 'Hit 6 http://localhost:8083'
+
+PS> Hit 6 http://localhost:8083
+Name: app2
+Name: app3
+Name: app1
+Name: app2
+Name: app3
+Name: app1
+PS C:\Users\ACER\proxy-lab> Run 'curl.exe -sI http://localhost:8083'
+
+PS> curl.exe -sI http://localhost:8083
+
+PS C:\Users\ACER\proxy-lab> W "caddy/Caddyfile" ((Get-Content caddy/Caddyfile -Raw).Replace('round_robin','random'))
+PS C:\Users\ACER\proxy-lab> Run 'docker compose exec -w /etc/caddy caddy caddy reload'
+
+PS> docker compose exec -w /etc/caddy caddy caddy reload
+
+PS C:\Users\ACER\proxy-lab> Start-Sleep 2
+PS C:\Users\ACER\proxy-lab> Run 'Hit 6 http://localhost:8083'
+
+PS> Hit 6 http://localhost:8083
+Name: app3
+Name: app2
+Name: app1
+Name: app1
+Name: app1
+Name: app2
+PS C:\Users\ACER\proxy-lab> Run 'docker compose ps'
+
+PS> docker compose ps
+
+PS C:\Users\ACER\proxy-lab> Stop-Transcript | Out-Null
+**********************
+Конец записи протокола Windows PowerShell
+Время окончания: 20261110155246
+**********************

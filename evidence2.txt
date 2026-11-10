@@ -1,0 +1,63 @@
+﻿**********************
+Начало записи сценария Windows PowerShell
+Время начала: 20261110155614
+Имя пользователя: DESKTOP-0O71IOT\ACER
+Запуск от имени пользователя: DESKTOP-0O71IOT\ACER
+Имя конфигурации: 
+Компьютер: DESKTOP-0O71IOT (Microsoft Windows NT 10.0.26200.0)
+Ведущее приложение: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe
+ИД процесса: 16304
+PSVersion: 5.1.26100.9711
+PSEdition: Desktop
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.26100.9711
+BuildVersion: 10.0.26100.9711
+CLRVersion: 4.0.30319.42000
+WSManStackVersion: 3.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+**********************
+PS C:\Users\ACER\proxy-lab> # 1. /hello с паузой после reload
+PS C:\Users\ACER\proxy-lab> W "nginx/default.conf" $c2; Run 'Rld'; Start-Sleep 3
+
+PS> Rld
+
+
+PS C:\Users\ACER\proxy-lab> Run 'curl.exe http://localhost:8080/hello'
+
+PS> curl.exe http://localhost:8080/hello
+
+PS C:\Users\ACER\proxy-lab> # 2. Round Robin после перезапуска
+PS C:\Users\ACER\proxy-lab> docker compose start app1 app2 app3
+
+PS C:\Users\ACER\proxy-lab> W "nginx/default.conf" $c4; Run 'Rld'; Start-Sleep 20
+
+PS> Rld
+
+
+PS C:\Users\ACER\proxy-lab> Run 'Hit 6 http://localhost:8080/app/'
+
+PS> Hit 6 http://localhost:8080/app/
+Name: app1
+Name: app1
+Name: app1
+Name: app1
+Name: app1
+Name: app1
+PS C:\Users\ACER\proxy-lab> # 3. Диагностика HAProxy
+PS C:\Users\ACER\proxy-lab> Run 'docker compose ps -a haproxy'
+
+PS> docker compose ps -a haproxy
+
+PS C:\Users\ACER\proxy-lab> Run 'docker compose logs haproxy --tail 30'
+
+PS> docker compose logs haproxy --tail 30
+
+PS C:\Users\ACER\proxy-lab> Run 'docker compose run --rm --no-deps haproxy haproxy -c -f /usr/local/etc/haproxy/haproxy.cfg'
+
+PS> docker compose run --rm --no-deps haproxy haproxy -c -f /usr/local/etc/haproxy/haproxy.cfg
+
+PS C:\Users\ACER\proxy-lab> Stop-Transcript | Out-Null
+**********************
+Конец записи протокола Windows PowerShell
+Время окончания: 20261110155642
+**********************
